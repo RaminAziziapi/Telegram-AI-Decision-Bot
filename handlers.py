@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from config import ADMIN_ID
+from config import ADMIN_IDS
 from ai_api import ask_ai
 import memory
 
