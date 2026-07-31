@@ -5,7 +5,13 @@ from telegram.ext import (
     filters
 )
 
-from config import BOT_TOKEN
+from config import (
+    BOT_TOKEN,
+    WEBHOOK_URL,
+    WEBHOOK_PATH,
+    PORT
+)
+
 from handlers import start, chat, clear
 
 
@@ -24,7 +30,6 @@ def main():
         CommandHandler("clear", clear)
     )
 
-
     app.add_handler(
         MessageHandler(
             filters.TEXT & ~filters.COMMAND,
@@ -33,10 +38,15 @@ def main():
     )
 
 
-    print("Bot started")
+    print("Bot started with webhook")
 
-    app.run_polling()
 
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        url_path=WEBHOOK_PATH,
+        webhook_url=f"{WEBHOOK_URL}/{WEBHOOK_PATH}"
+    )
 
 
 if __name__ == "__main__":
