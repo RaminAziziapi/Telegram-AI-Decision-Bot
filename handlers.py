@@ -8,14 +8,17 @@ import memory
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    if update.effective_user.id not in ADMIN_IDS:
+    user_id = update.effective_user.id
+
+    if user_id not in ADMIN_IDS:
         await update.message.reply_text(
             "دسترسی ندارید."
         )
         return
 
     await update.message.reply_text(
-        "سلام رامین 👋\nمن آماده‌ام. هر چیزی می‌خواهی بپرس."
+        "سلام رامین 👋\n"
+        "من آماده‌ام. هر چیزی می‌خواهی بپرس."
     )
 
 
@@ -23,7 +26,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = update.effective_user.id
 
-    if user_id != ADMIN_ID:
+    if user_id not in ADMIN_IDS:
         return
 
     text = update.message.text
@@ -37,8 +40,8 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
 
         answer = ask_ai(
-    memory.get_history(user_id)
-)
+            memory.get_history(user_id)
+        )
 
         memory.add_message(
             user_id,
@@ -46,7 +49,9 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
             answer
         )
 
-        await update.message.reply_text(answer)
+        await update.message.reply_text(
+            answer
+        )
 
     except Exception as e:
 
@@ -57,8 +62,13 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    user_id = update.effective_user.id
+
+    if user_id not in ADMIN_IDS:
+        return
+
     memory.clear_history(
-        update.effective_user.id
+        user_id
     )
 
     await update.message.reply_text(
