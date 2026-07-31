@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from config import ADMIN_ID
-from claude_api import ask_claude
+from ai_api import ask_ai
 import memory
 
 
@@ -36,9 +36,9 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
 
-        answer = ask_claude(
-            memory.get_history(user_id)
-        )
+        answer = ask_ai(
+    memory.get_history(user_id)
+)
 
         memory.add_message(
             user_id,
